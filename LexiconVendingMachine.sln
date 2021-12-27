@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LexiconVendingMachine", "LexiconVendingMachine\LexiconVendingMachine.csproj", "{D29ADDDD-0F65-4F9C-9812-A301E819573E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexiconVendingMachine.Tests", "LexiconVendingMachine.Tests\LexiconVendingMachine.Tests.csproj", "{84B4A6C4-F39B-4AB3-9B91-ED50D580F877}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D29ADDDD-0F65-4F9C-9812-A301E819573E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29ADDDD-0F65-4F9C-9812-A301E819573E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29ADDDD-0F65-4F9C-9812-A301E819573E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29ADDDD-0F65-4F9C-9812-A301E819573E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84B4A6C4-F39B-4AB3-9B91-ED50D580F877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84B4A6C4-F39B-4AB3-9B91-ED50D580F877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84B4A6C4-F39B-4AB3-9B91-ED50D580F877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84B4A6C4-F39B-4AB3-9B91-ED50D580F877}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA2777C9-D164-4649-9FEE-AF21AA1D47A4}
+	EndGlobalSection
+EndGlobal
