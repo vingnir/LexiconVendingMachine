@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LexiconVendingMachine
+﻿namespace LexiconVendingMachine
 {
     class VendingMachine : IVending
     {
-       public void Purchase()
+        public void Purchase()
         {
             //TODO
         }
@@ -16,14 +12,14 @@ namespace LexiconVendingMachine
             //TODO
         }
 
-        public void InsertMoney() 
+        public void InsertMoney()
         {
             //TODO
         }
 
-        public void EndTransaction() 
+        public void EndTransaction()
         {
-        //TODO
+            //TODO
         }
     }
 }

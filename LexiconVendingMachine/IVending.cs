@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LexiconVendingMachine
+﻿namespace LexiconVendingMachine
 {
     interface IVending
     {
-       void Purchase(); //TODO
+        void Purchase(); //TODO
 
         void ShowAll();
 
