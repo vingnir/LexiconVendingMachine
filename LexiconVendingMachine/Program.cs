@@ -37,7 +37,7 @@ namespace LexiconVendingMachine
                     Program.DisplayProducts();
                     return true;
                 case "3":
-                    vendingMachine.InsertMoney();
+                    vendingMachine.InsertMoney(100,1); // TODO
                     return true;
                 case "4":
                     vendingMachine.EndTransaction();

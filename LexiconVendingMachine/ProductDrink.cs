@@ -25,7 +25,7 @@ namespace LexiconVendingMachine
 
         public override string Use()
         {
-            string instructions = "drink...";
+            string instructions = "Drink it and enjoy! don't forget to recycle the can...";
             return instructions;
         }
     }

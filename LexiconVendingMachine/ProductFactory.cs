@@ -23,7 +23,7 @@ namespace LexiconVendingMachine
         {
             //int id = 1;
             Inventory.Add(0, new ProductDrink("Coca Cola Can", 330, 15));           
-            Inventory.Add(1, new ProductToy("KinderEgg", 50, 25));            
+            Inventory.Add(1, new ProductToy("KinderEgg", 25));            
             Inventory.Add(2, new ProductFood("Sandwich", 200, 45));
             LogWriter.LogWrite($"Current items in dictonary {Inventory[0].Name}, {Inventory[1].Name}, {Inventory[2].Name}");
 
@@ -61,7 +61,7 @@ namespace LexiconVendingMachine
             return Inventory.ContainsKey(id);
         }
 
-        public override string[] Examine()
+        public override string Examine()
         {
             throw new System.NotImplementedException();
         }

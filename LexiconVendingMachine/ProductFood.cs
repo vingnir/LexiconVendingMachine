@@ -12,17 +12,11 @@ namespace LexiconVendingMachine
             this.Unit = "g";
         }
 
-        public override string Examine()
-        {
-            string examineItem = $"{Name} {Size} {Unit} {Price}";
-
-            return examineItem;
-
-        }
+        
 
         public override string Use()
         {
-            string instructions = "eat...";
+            string instructions = "Eat and enjoy...";
             return instructions;
         }
     }

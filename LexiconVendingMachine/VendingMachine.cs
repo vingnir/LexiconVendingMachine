@@ -19,7 +19,7 @@ namespace LexiconVendingMachine
         }
 
         //TODO
-        public bool AddToMoneyPool(int denomination, int quantity)
+        public bool InsertMoney(int denomination, int quantity)
         {
             bool success;
             decimal currentValue = MoneyPool;
@@ -63,13 +63,6 @@ namespace LexiconVendingMachine
             }
             //TODO
             return display;
-        }
-
-        public bool InsertMoney()
-        // TODO 
-        {
-
-            return true;
         }
 
 

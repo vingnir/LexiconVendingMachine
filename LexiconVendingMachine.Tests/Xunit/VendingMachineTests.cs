@@ -6,7 +6,7 @@ namespace LexiconVendingMachine.Tests
     public class VendingMachineTests
     {
 
-        // Test AddToMoneyPool
+        // Test InsertMoney
         [Theory]
         [InlineData(3, 1, false)] // Test forbidden denominations
         [InlineData(15, 1, false)]
@@ -21,13 +21,13 @@ namespace LexiconVendingMachine.Tests
         [InlineData(-1, -500, false)]
         [InlineData(-500, 1, false)]
         [InlineData(-500, -1, false)]
-        public void AddToMoneyPool_ShouldReturnTrueIfValueIsAdded(int denomination, int quantity, bool expected)
+        public void InsertMoney_ShouldReturnTrueIfValueIsAdded(int denomination, int quantity, bool expected)
         {
             VendingMachine vendingMachine = new VendingMachine();
             // Arrange
 
             // Act
-            bool actual = vendingMachine.AddToMoneyPool(denomination, quantity);
+            bool actual = vendingMachine.InsertMoney(denomination, quantity);
 
             // Assert
             Assert.Equal(expected, actual);

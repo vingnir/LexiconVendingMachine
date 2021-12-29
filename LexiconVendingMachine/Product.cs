@@ -7,9 +7,18 @@
         public string Unit { get; set; }
         public decimal Price { get; set; }
 
-        public abstract string Examine();
+        public virtual string Examine()
+        {
+            string examineItem = $"{Name} {Size} {Unit} {Price}";
 
-        public abstract string Use();
+            return examineItem;
+        }
+
+        public virtual string Use()
+        {
+            string instructions = "No instructions available";
+            return instructions;
+        }
 
     }
     
