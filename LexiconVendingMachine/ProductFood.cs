@@ -2,7 +2,7 @@
 
 namespace LexiconVendingMachine
 {
-    class ProductFood : Product,IEatable
+    class ProductFood : Product, IEatable
     {
         public ProductFood(string name, int size, decimal price)
         {

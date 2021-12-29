@@ -2,7 +2,7 @@
 
 namespace LexiconVendingMachine
 {
-    class ProductDrink : Product, IDrinkable
+    public class ProductDrink : Product, IDrinkable
     {
 
         public ProductDrink(string name, int size, decimal price)
@@ -17,6 +17,16 @@ namespace LexiconVendingMachine
         public void Drink()
         {
             Console.WriteLine("Klunk klunk...");
+        }
+
+        public override string[] Examine()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string Use()
+        {
+            throw new NotImplementedException();
         }
     }
 }

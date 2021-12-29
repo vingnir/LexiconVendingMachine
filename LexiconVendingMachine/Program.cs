@@ -34,7 +34,7 @@ namespace LexiconVendingMachine
                     vendingMachine.Purchase();
                     return true;
                 case "2":
-                    vendingMachine.ShowAll();
+                    Program.DisplayProducts();
                     return true;
                 case "3":
                     vendingMachine.InsertMoney();
@@ -47,6 +47,17 @@ namespace LexiconVendingMachine
                     return true;
             }
 
+        }
+
+        public static void DisplayProducts()
+        {
+            VendingMachine vm = new VendingMachine();
+            string[] products = vm.ShowAll();
+            foreach(var value in products)
+            {
+                Console.WriteLine(value);
+            }
+            Console.ReadKey();
         }
     }
 }

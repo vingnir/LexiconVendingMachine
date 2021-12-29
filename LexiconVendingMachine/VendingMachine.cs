@@ -1,53 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LexiconVendingMachine
 {
-    class VendingMachine : Product, IVending
+    public class VendingMachine : Product, IVending
     {
-        private readonly SortedDictionary<Product, int> availableProducts; //TODO
-        private decimal[] MoneyPool; 
-        
+        private SortedDictionary<int,Product> AvailableProducts;  //TODO
+        private readonly ProductFactory productFactory;
 
-        public void Purchase()
-        {
-            //TODO
+        private decimal MoneyPool { get; set; }
+
+       
+        public VendingMachine()
+        {           
+            this.AvailableProducts = new SortedDictionary<int, Product>();
+            this.productFactory = new ProductFactory();
         }
 
-        public void ShowAll()
+        //TODO
+        public bool AddToMoneyPool(int denomination, int quantity)
         {
-            //Test
-            //availableProducts.Add();
-
-            foreach (var product in availableProducts)
-            {
-                Console.WriteLine(product);
-            }
-            //TODO
-        }
-
-        public void InsertMoney()
-        {
+            bool success;
+            decimal currentValue = MoneyPool;
             CurrencyDenominations cd = new CurrencyDenominations();
-            string currency = "kr";
-            Console.WriteLine("Please insert cash in any of the following values");
-            foreach(var denomination in cd.denominations)
+            LogWriter.LogWrite("Current value : " + MoneyPool); // TODO
+            bool validDenomination = cd.denominations.Contains(denomination);
+
+            // Prevent negative inputs and check so input is valid denomination
+            if (denomination > 0 && quantity > 0 && validDenomination)
             {
-                Console.WriteLine(denomination + currency);
-
+                int insertedAmount = denomination * quantity;
+                MoneyPool += insertedAmount;
+                LogWriter.LogWrite("Updated value : " + MoneyPool); // TODO
+                success = currentValue < MoneyPool;
             }
-            Console.ReadLine();
-            //TODO
+            else
+            {
+                success = false;
+            }
+            return success;
         }
-
-        public void EndTransaction()
+        public bool Purchase()
         {
             //TODO
+            
+
+            return true;
+        }
+
+        public string[] ShowAll()
+        {
+            if (AvailableProducts.Count == 0) AvailableProducts = productFactory.GetProducts();
+
+            string[] display = new string[AvailableProducts.Count];
+            for (int i = 0; i < AvailableProducts.Count; i++)
+            {
+                var add = AvailableProducts[i];
+                display[i] = add.Name + add.Size + add.Unit + add.Price;
+                //LogWriter.LogWrite(product + "testar");
+                
+            }
+            //TODO
+            return display;
+        }
+
+        public bool InsertMoney()
+        // TODO 
+        {
+
+            return true;
+        }
+
+
+        public bool EndTransaction()
+        {
+            //TODO
+            return true;
         }
 
         public void DisplayChangeMessage()
         {
             //TODO
+        }
+
+        public override string[] Examine()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string Use()
+        {
+            throw new NotImplementedException();
         }
     }
 }
