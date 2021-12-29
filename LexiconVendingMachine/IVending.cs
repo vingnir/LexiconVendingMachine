@@ -2,12 +2,12 @@
 {
     interface IVending
     {
-        void Purchase(); //TODO
+        bool Purchase(); //TODO
 
-        void ShowAll();
+        string[] ShowAll();
 
-        void InsertMoney();
+        bool InsertMoney();
 
-        void EndTransaction();
+        bool EndTransaction();
     }
 }
