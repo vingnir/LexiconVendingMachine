@@ -7,7 +7,7 @@
         public string Unit { get; set; }
         public decimal Price { get; set; }
 
-        public abstract string[] Examine();
+        public abstract string Examine();
 
         public abstract string Use();
 

@@ -2,29 +2,30 @@
 
 namespace LexiconVendingMachine
 {
-    class ProductToy : Product, IPlayable
+    class ProductToy : Product
     {
-        public ProductToy(string name, int size, decimal price)
+        public ProductToy(string name, decimal price)
         {
             this.Name = name;
-            this.Size = size;
+            this.Size = 1;
             this.Price = price;
             this.Unit = "pcs";
         }
 
-        public override string[] Examine()
+        public override string Examine()
         {
-            throw new NotImplementedException();
+            string examineItem = $"{Name} {Size} {Unit} {Price}";
+
+            return examineItem;
+
         }
 
-        public void Play()
-        {
-            Console.WriteLine("play play...");
-        }
+
 
         public override string Use()
         {
-            throw new NotImplementedException();
+            string instructions = "play play...";
+            return instructions; 
         }
     }
 }

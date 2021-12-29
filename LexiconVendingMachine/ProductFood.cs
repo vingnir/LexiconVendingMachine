@@ -2,7 +2,7 @@
 
 namespace LexiconVendingMachine
 {
-    class ProductFood : Product, IEatable
+    class ProductFood : Product
     {
         public ProductFood(string name, int size, decimal price)
         {
@@ -11,9 +11,19 @@ namespace LexiconVendingMachine
             this.Price = price;
             this.Unit = "g";
         }
-        public void Eat()
+
+        public override string Examine()
         {
-            Console.WriteLine("Yum yum...");
+            string examineItem = $"{Name} {Size} {Unit} {Price}";
+
+            return examineItem;
+
+        }
+
+        public override string Use()
+        {
+            string instructions = "eat...";
+            return instructions;
         }
     }
 }

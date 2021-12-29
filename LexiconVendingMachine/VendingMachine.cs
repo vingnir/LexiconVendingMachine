@@ -84,9 +84,12 @@ namespace LexiconVendingMachine
             //TODO
         }
 
-        public override string[] Examine()
+        public override string Examine()
         {
-            throw new NotImplementedException();
+            string examineItem = $"{Name} {Size} {Unit} {Price}";// TODO fix
+
+            return examineItem;
+
         }
 
         public override string Use()
