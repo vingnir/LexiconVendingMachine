@@ -6,26 +6,10 @@ namespace LexiconVendingMachine
 {
     public class VendingMachine : Product, IVending
     {
-        private static Dictionary<int,Product> AvailableProducts;        
+        private static Dictionary<int, Product> AvailableProducts;
         private static bool ProductsLoaded;
         private int MoneyPool { get; set; }
-                   
-        private bool LoadProducts()
-        {
-            ProductFactory productFactory = new ProductFactory();
-            if (AvailableProducts == null)
-            {
-                AvailableProducts = new Dictionary<int, Product>();
-                AvailableProducts = productFactory.GetProducts();
-                ProductsLoaded = true;
 
-                return true;
-            }
-
-            else return false;
-
-        }
-        
         public bool InsertMoney(int denomination, int quantity)
         {
             bool success = false;
@@ -34,14 +18,14 @@ namespace LexiconVendingMachine
 
             // Prevent negative inputs and check so input is valid denomination
             bool validDenomination = cd.denominations.Contains(denomination) && denomination > 0 && quantity > 0;
-           
+
             if (validDenomination)
             {
                 int insertedAmount = denomination * quantity;
-                MoneyPool += insertedAmount;              
+                MoneyPool += insertedAmount;
                 success = currentValue < MoneyPool;
             }
-                       
+
             return success;
         }
 
@@ -56,22 +40,22 @@ namespace LexiconVendingMachine
             {
                 AvailableProducts[key].InStock -= 1;
                 MoneyPool -= AvailableProducts[key].Price;
-                
+
                 return true;
             }
-            else return false;            
+            else return false;
         }
 
         public string ShowAll()
         {
-            string productList = string.Empty;
-            
+            string productList = $"\nId|Name\t\t Size\t Price\t In stock";
+
             if (!ProductsLoaded) { LoadProducts(); }
 
             foreach (var product in AvailableProducts)
             {
-                productList += $"\n{product.Value.Name}\t Size: {product.Value.Size}{product.Value.Unit} Price: {product.Value.Price} In stock: {product.Value.InStock}";
-            }            
+                productList += $"\n {product.Key}|{product.Value.Name}\t {product.Value.Size}{product.Value.Unit}\t {product.Value.Price}kr\t {product.Value.InStock}";
+            }
             return productList;
         }
 
@@ -79,7 +63,7 @@ namespace LexiconVendingMachine
         {
             Calculator calculator = new Calculator();
             int[] depositToReturn = calculator.GetChange(MoneyPool);
-            
+
             return depositToReturn;
         }
 
@@ -93,6 +77,18 @@ namespace LexiconVendingMachine
         {
             string instructions = $"Put money in the machine and follow the instructions...";
             return instructions;
+        }
+        private bool LoadProducts()
+        {
+            ProductFactory productFactory = new ProductFactory();
+            if (AvailableProducts == null)
+            {
+                AvailableProducts = new Dictionary<int, Product>();
+                AvailableProducts = productFactory.GetProducts();
+                ProductsLoaded = true;
+                return true;
+            }
+            else return false;
         }
     }
 }

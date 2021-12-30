@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LexiconVendingMachine
+﻿namespace LexiconVendingMachine
 {
     class ProductToy : Product
     {
@@ -12,11 +10,11 @@ namespace LexiconVendingMachine
             this.Unit = "pcs";
             this.InStock = stock;
         }
-        
+
         public override string Use()
         {
             string instructions = "Play and have fun...";
-            return instructions; 
+            return instructions;
         }
     }
 }

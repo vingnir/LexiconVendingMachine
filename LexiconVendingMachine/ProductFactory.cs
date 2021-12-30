@@ -5,10 +5,10 @@ namespace LexiconVendingMachine
     public class ProductFactory
     {
         private readonly Dictionary<int, Product> Inventory;
-        
+
         public ProductFactory()
         {
-            Inventory = new Dictionary<int, Product>();            
+            Inventory = new Dictionary<int, Product>();
         }
 
         public Dictionary<int, Product> GetProducts()
@@ -21,13 +21,15 @@ namespace LexiconVendingMachine
         // TODO load from db
         public bool LoadProducts()
         {
+            int key = 0;
             int current = Inventory.Count;
-            Inventory.Add(0, new ProductDrink("Coca Cola Can", 330, 15, 40));           
-            Inventory.Add(1, new ProductToy("KinderEgg", 25, 80));            
-            Inventory.Add(2, new ProductFood("Sandwich", 200, 45,30));
-            LogWriter.LogWrite($"Current items in stock {Inventory[0].Name} {Inventory[0].InStock}, {Inventory[1].Name} {Inventory[1].InStock}, {Inventory[2].Name} {Inventory[2].InStock} ");
+            Inventory.Add(key++, new ProductDrink("Trocadero", 330, 15, 40));
+            Inventory.Add(key++, new ProductToy("Kexchocklad", 25, 80));
+            Inventory.Add(key++, new ProductFood("Sandwich", 200, 45, 30));
+            Inventory.Add(key++, new ProductFood("Pizza", 350, 125, 8));
+            Inventory.Add(key++, new ProductToy("Gameboy", 745, 5));
 
             return Inventory.Count > current;
-        }                        
+        }
     }
 }

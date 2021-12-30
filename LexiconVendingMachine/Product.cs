@@ -20,5 +20,5 @@
             string instructions = "No instructions available";
             return instructions;
         }
-    }    
+    }
 }

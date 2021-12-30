@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LexiconVendingMachine
+﻿namespace LexiconVendingMachine
 {
     class ProductFood : Product
     {
@@ -13,7 +11,7 @@ namespace LexiconVendingMachine
             this.InStock = stock;
         }
 
-        
+
 
         public override string Use()
         {

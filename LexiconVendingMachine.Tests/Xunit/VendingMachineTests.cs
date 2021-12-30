@@ -34,7 +34,7 @@ namespace LexiconVendingMachine.Tests
         }
 
 
-              
+
 
         // Testing method with no arguments to setup inventory
         [Fact]
@@ -51,8 +51,8 @@ namespace LexiconVendingMachine.Tests
             Assert.Equal(expected, actual);
         }
 
-        
 
-        
+
+
     }
 }
