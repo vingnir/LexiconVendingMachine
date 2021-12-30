@@ -2,73 +2,33 @@
 
 namespace LexiconVendingMachine
 {
-    public class ProductFactory : Product
+    public class ProductFactory
     {
-        private readonly SortedDictionary<int, Product> Inventory;
-
+        private readonly Dictionary<int, Product> Inventory;
+        
         public ProductFactory()
         {
-            Inventory = new SortedDictionary<int, Product>();
+            Inventory = new Dictionary<int, Product>();
+            
         }
 
-        public SortedDictionary<int, Product> GetProducts()
+        public Dictionary<int, Product> GetProducts()
         {
-           if(Inventory.Count <=0 ) AddProducts(); // TODO Get from DB 
+            if (Inventory.Count <= 0) { LoadProducts(); } // TODO Get from DB 
 
             return Inventory;
         }
 
-        // TODO DELETE Test method
-        public bool AddProducts()
+        // TODO 
+        public bool LoadProducts()
         {
-            //int id = 1;
-            Inventory.Add(0, new ProductDrink("Coca Cola Can", 330, 15));           
-            Inventory.Add(1, new ProductToy("KinderEgg", 25));            
-            Inventory.Add(2, new ProductFood("Sandwich", 200, 45));
-            LogWriter.LogWrite($"Current items in dictonary {Inventory[0].Name}, {Inventory[1].Name}, {Inventory[2].Name}");
+            int current = Inventory.Count;
+            Inventory.Add(0, new ProductDrink("Coca Cola Can", 330, 15, 40));           
+            Inventory.Add(1, new ProductToy("KinderEgg", 25, 80));            
+            Inventory.Add(2, new ProductFood("Sandwich", 200, 45,30));
+            LogWriter.LogWrite($"Current items in stock {Inventory[0].Name} {Inventory[0].InStock}, {Inventory[1].Name} {Inventory[1].InStock}, {Inventory[2].Name} {Inventory[2].InStock} ");
 
-            return Inventory.Count > 0;
-        }
-
-        public bool AddProducts(Product newProduct)
-        {
-            int id = Inventory.Count + 1; //TODO fix
-
-            Inventory.Add(id, newProduct);
-            LogWriter.LogWrite($"product was added {Inventory[id].Name}");
-            return Inventory.ContainsKey(id);
-        }
-
-        public bool AddProducts(Product newProduct, int quantity)
-        {
-            int id = Inventory.Count + 1; //TODO fix
-            for (int i = 0; i < quantity; i++)
-            {
-                id++;
-                Inventory.Add(id, newProduct);
-                //TODO Delete
-                bool hasValue = Inventory.TryGetValue(id, out var value);
-                if (hasValue)
-                {
-                    LogWriter.LogWrite($"Current values in dictonary : {id} {value.Name} {value.Size}{value.Unit} {value.Price}"); // TODO                                                                                                                        
-                }
-                else
-                {
-                    LogWriter.LogWrite("Key not present");
-                }
-            }
-
-            return Inventory.ContainsKey(id);
-        }
-
-        public override string Examine()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override string Use()
-        {
-            throw new System.NotImplementedException();
-        }
+            return Inventory.Count > current;
+        }                        
     }
 }

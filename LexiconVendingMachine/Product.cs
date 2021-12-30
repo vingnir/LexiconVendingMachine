@@ -6,10 +6,11 @@
         public int Size { get; set; }
         public string Unit { get; set; }
         public decimal Price { get; set; }
+        public int InStock { get; set; }
 
         public virtual string Examine()
         {
-            string examineItem = $"{Name} {Size} {Unit} {Price}";
+            string examineItem = $"{Name}, {Size}, {Unit}, {Price}, {InStock}";
 
             return examineItem;
         }
@@ -19,7 +20,5 @@
             string instructions = "No instructions available";
             return instructions;
         }
-
-    }
-    
+    }    
 }

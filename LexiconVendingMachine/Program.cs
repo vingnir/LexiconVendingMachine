@@ -4,8 +4,11 @@ namespace LexiconVendingMachine
 {
     class Program
     {
+        private static VendingMachine vendingMachine;
+       
         static void Main()
         {
+            vendingMachine = new VendingMachine();
             bool showMenu = true;
             while (showMenu)
             {
@@ -15,7 +18,7 @@ namespace LexiconVendingMachine
 
         private static bool MainMenu()
         {
-            VendingMachine vendingMachine = new VendingMachine();
+            
 
             Console.Clear();
             Console.WriteLine("...Lexicon Vending Machine...\n");
@@ -29,9 +32,12 @@ namespace LexiconVendingMachine
             switch (Console.ReadLine())
             {
                 case "0":
-                    return false;
+
+                    DisplayChange(135); //TODO
+                    
+                    return true;
                 case "1":
-                    vendingMachine.Purchase();
+                    vendingMachine.Purchase(1);
                     return true;
                 case "2":
                     Program.DisplayProducts();
@@ -49,14 +55,22 @@ namespace LexiconVendingMachine
 
         }
 
-        public static void DisplayProducts()
+        public static void DisplayChange(int moneyToReturn)
         {
-            VendingMachine vm = new VendingMachine();
-            string[] products = vm.ShowAll();
-            foreach(var value in products)
+            CurrencyDenominations cd = new CurrencyDenominations();
+            Calculator calculator = new Calculator();
+            var change = calculator.GetChange(moneyToReturn);
+            for (int i = cd.denominations.Length - 1; i >= 0; i--)
             {
-                Console.WriteLine(value);
+                if (change[i] > 0) { Console.WriteLine("And the change is " + change[i] + " x " + cd.denominations[i]+ "kr"); }
             }
+            Console.ReadKey();
+        }
+
+            public static void DisplayProducts()
+        {
+            VendingMachine vm = new VendingMachine();            
+            Console.WriteLine(vm.ShowAll());
             Console.ReadKey();
         }
     }

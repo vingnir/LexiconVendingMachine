@@ -5,27 +5,19 @@ namespace LexiconVendingMachine
     public class ProductDrink : Product
     {
 
-        public ProductDrink(string name, int size, decimal price)
+        public ProductDrink(string name, int size, decimal price, int stock)
         {
             this.Name = name;
             this.Size = size;
             this.Price = price;
             this.Unit = "ml";
+            this.InStock = stock;
         }
-
-
-        
-        public override string Examine()
-        {
-            string examineItem = $"{Name} {Size} {Unit} {Price}";
-
-            return examineItem;
-
-        }
+                            
 
         public override string Use()
         {
-            string instructions = "Drink it and enjoy! don't forget to recycle the can...";
+            string instructions = "Drink it and enjoy! And please don't forget to recycle...";
             return instructions;
         }
     }

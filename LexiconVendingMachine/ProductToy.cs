@@ -4,12 +4,13 @@ namespace LexiconVendingMachine
 {
     class ProductToy : Product
     {
-        public ProductToy(string name, decimal price)
+        public ProductToy(string name, decimal price, int stock)
         {
             this.Name = name;
             this.Size = 1;
             this.Price = price;
             this.Unit = "pcs";
+            this.InStock = stock;
         }
 
         

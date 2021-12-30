@@ -2,9 +2,9 @@
 {
     interface IVending
     {
-        bool Purchase(); //TODO
+        bool Purchase(int key); //TODO
 
-        string[] ShowAll();
+        string ShowAll();
 
         bool InsertMoney(int denomination, int quantity);
 

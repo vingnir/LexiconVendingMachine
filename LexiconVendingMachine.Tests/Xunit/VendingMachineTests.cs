@@ -34,84 +34,25 @@ namespace LexiconVendingMachine.Tests
         }
 
 
-
-        // Test AddProducts
-        [Fact]
-        public void AddProducts_ShouldReturnTrueIfMultipleProductAreAdded()
-        {
-
-            // Arrange
-            ProductFactory pf = new ProductFactory();
-            bool expected = true;
-
-            // Act
-            bool actual = pf.AddProducts(new ProductDrink("Coca Cola Tank", 1000, 250), 10); // adding 10
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void AddProducts_ShouldReturnFalseIfMultipleProductAreNOTAdded()
-        {
-            // Arrange
-            ProductFactory pf = new ProductFactory();
-            bool expected = false;
-
-            // Act
-            bool actual = pf.AddProducts(new ProductDrink("Coca Cola Tank", 1000, 250), 0); // adding 10
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
+              
 
         // Testing method with no arguments to setup inventory
         [Fact]
-        public void AddProducts_ShouldReturnTrueIfProductsAreCreated()
-        {
-
-
-            // Arrange
-            ProductFactory pf = new ProductFactory();
-            bool expected = true;
-
-            // Act
-            bool actual = pf.AddProducts();
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-
-        // Testing overloaded method with 1 argument to add 1 product
-        [Fact]
-        public void AddProducts_ShouldReturnTrueIfOneProductAreCreated()
+        public void LoadProducts_ShouldReturnTrueIfProductsAreCreated()
         {
             // Arrange
             ProductFactory pf = new ProductFactory();
             bool expected = true;
 
             // Act
-            bool actual = pf.AddProducts(new ProductDrink("Pepsi Cola Can", 330, 25));
+            bool actual = pf.LoadProducts();
 
             // Assert
             Assert.Equal(expected, actual);
         }
 
+        
 
-        // Testing overloaded method with 1 argument to add 1 product
-        [Fact]
-        public void ShowAll_ShouldReturnDictonaryWithProducts()
-        {
-            // Arrange
-            VendingMachine vendingMachine = new VendingMachine();
-            object expected = null;
-
-            // Act
-            var actual = vendingMachine.ShowAll();
-
-            // Assert
-            Assert.Equal(expected, actual);
-        }
-        //TODO GetProducts
+        
     }
 }
