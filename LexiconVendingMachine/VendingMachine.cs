@@ -18,15 +18,17 @@ namespace LexiconVendingMachine
                 AvailableProducts = new Dictionary<int, Product>();
                 AvailableProducts = productFactory.GetProducts();
                 ProductsLoaded = true;
+
                 return true;
             }
 
-            return false;
+            else return false;
+
         }
-        //TODO
+        
         public bool InsertMoney(int denomination, int quantity)
         {
-            bool success;
+            bool success = false;
             int currentValue = MoneyPool;
             CurrencyDenominations cd = new CurrencyDenominations();
 
@@ -39,8 +41,7 @@ namespace LexiconVendingMachine
                 MoneyPool += insertedAmount;              
                 success = currentValue < MoneyPool;
             }
-            else success = false;
-            
+                       
             return success;
         }
 
