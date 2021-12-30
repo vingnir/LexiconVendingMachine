@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public int Size { get; set; }
         public string Unit { get; set; }
-        public decimal Price { get; set; }
+        public int Price { get; set; }
         public int InStock { get; set; }
 
         public virtual string Examine()

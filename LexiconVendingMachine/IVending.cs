@@ -8,6 +8,6 @@
 
         bool InsertMoney(int denomination, int quantity);
 
-        bool EndTransaction();
+        int[] EndTransaction();
     }
 }

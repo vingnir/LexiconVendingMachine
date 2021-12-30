@@ -4,7 +4,7 @@ namespace LexiconVendingMachine
 {
     class ProductFood : Product
     {
-        public ProductFood(string name, int size, decimal price, int stock)
+        public ProductFood(string name, int size, int price, int stock)
         {
             this.Name = name;
             this.Size = size;

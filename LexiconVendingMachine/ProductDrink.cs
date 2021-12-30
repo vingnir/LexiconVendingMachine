@@ -4,8 +4,7 @@ namespace LexiconVendingMachine
 {
     public class ProductDrink : Product
     {
-
-        public ProductDrink(string name, int size, decimal price, int stock)
+        public ProductDrink(string name, int size, int price, int stock)
         {
             this.Name = name;
             this.Size = size;
@@ -14,7 +13,6 @@ namespace LexiconVendingMachine
             this.InStock = stock;
         }
                             
-
         public override string Use()
         {
             string instructions = "Drink it and enjoy! And please don't forget to recycle...";

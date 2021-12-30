@@ -6,31 +6,19 @@ namespace LexiconVendingMachine
 {
     public class VendingMachine : Product, IVending
     {
-        private static Dictionary<int,Product> AvailableProducts;  //TODO
-        private readonly ProductFactory productFactory;
+        private static Dictionary<int,Product> AvailableProducts;        
         private static bool ProductsLoaded;
-
-        private decimal MoneyPool { get; set; }
-
-       
-        public VendingMachine()
-        {           
-            //this.AvailableProducts = new Dictionary<int, Product>();
-            this.productFactory = new ProductFactory();
-            this.MoneyPool = 100;
-            
-            
-        }
-
+        private int MoneyPool { get; set; }
+                   
         private bool LoadProducts()
         {
+            ProductFactory productFactory = new ProductFactory();
             if (AvailableProducts == null)
             {
                 AvailableProducts = new Dictionary<int, Product>();
                 AvailableProducts = productFactory.GetProducts();
                 ProductsLoaded = true;
-
-                return true;                
+                return true;
             }
 
             return false;
@@ -39,94 +27,71 @@ namespace LexiconVendingMachine
         public bool InsertMoney(int denomination, int quantity)
         {
             bool success;
-            decimal currentValue = MoneyPool;
+            int currentValue = MoneyPool;
             CurrencyDenominations cd = new CurrencyDenominations();
-            LogWriter.LogWrite("Current value : " + MoneyPool); // TODO
-            bool validDenomination = cd.denominations.Contains(denomination);
 
             // Prevent negative inputs and check so input is valid denomination
-            if (denomination > 0 && quantity > 0 && validDenomination)
+            bool validDenomination = cd.denominations.Contains(denomination) && denomination > 0 && quantity > 0;
+           
+            if (validDenomination)
             {
                 int insertedAmount = denomination * quantity;
-                MoneyPool += insertedAmount;
-                LogWriter.LogWrite("Updated value : " + MoneyPool); // TODO
+                MoneyPool += insertedAmount;              
                 success = currentValue < MoneyPool;
             }
-            else
-            {
-                success = false;
-            }
+            else success = false;
+            
             return success;
         }
+
         public bool Purchase(int key)
         {
-            LogWriter.LogWrite("ProductsLoaded : " + ProductsLoaded); // TODO
-            //TODO
+            MoneyPool = 100; //TODO DELETE
             if (!ProductsLoaded) { LoadProducts(); }
 
-            bool productIsAvailable = AvailableProducts.ContainsKey(key);
-            LogWriter.LogWrite("ProductsLoaded : " + ProductsLoaded); // TODO
-            LogWriter.LogWrite("key " + key +  "productIsAvailable : " + productIsAvailable); // TODO
-            if (productIsAvailable && AvailableProducts[key].Price <= MoneyPool) 
+            bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].Price <= MoneyPool;
+
+            if (productIsAvailable)
             {
                 AvailableProducts[key].InStock -= 1;
                 MoneyPool -= AvailableProducts[key].Price;
-                LogWriter.LogWrite("Updated value : " + MoneyPool); // TODO
+                
+                return true;
             }
-
-            return productIsAvailable;
-
+            else return false;            
         }
 
         public string ShowAll()
         {
             string productList = string.Empty;
-            LogWriter.LogWrite("ProductsLoaded : " + ProductsLoaded); // TODO
+            
             if (!ProductsLoaded) { LoadProducts(); }
 
             foreach (var product in AvailableProducts)
             {
                 productList += $"\n{product.Value.Name}\t Size: {product.Value.Size}{product.Value.Unit} Price: {product.Value.Price} In stock: {product.Value.InStock}";
-            }
-            
-            //TODO
+            }            
             return productList;
         }
 
-
-        public bool EndTransaction()
+        public int[] EndTransaction()
         {
-            //TODO
-            return true;
+            Calculator calculator = new Calculator();
+            int[] depositToReturn = calculator.GetChange(MoneyPool);
+            
+            return depositToReturn;
         }
-
 
         public override string Examine()
         {
-            string examineItem = $"Vending Machine version 1.0";
-
-            return examineItem;
-
+            string machineInfo = $"Vending Machine version 1.0";
+            return machineInfo;
         }
 
         public override string Use()
         {
-            string instructions = $"Put money in the machine and follow the instructions";
-
+            string instructions = $"Put money in the machine and follow the instructions...";
             return instructions;
         }
     }
 }
-
-/*
- // The Add method throws an exception if the new key is
-        // already in the dictionary.
-        try
-        {
-            openWith.Add("txt", "winword.exe");
-        }
-        catch (ArgumentException)
-        {
-            Console.WriteLine("An element with Key = \"txt\" already exists.");
-        }
- */

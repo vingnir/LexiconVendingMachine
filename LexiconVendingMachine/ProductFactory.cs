@@ -8,8 +8,7 @@ namespace LexiconVendingMachine
         
         public ProductFactory()
         {
-            Inventory = new Dictionary<int, Product>();
-            
+            Inventory = new Dictionary<int, Product>();            
         }
 
         public Dictionary<int, Product> GetProducts()
@@ -19,7 +18,7 @@ namespace LexiconVendingMachine
             return Inventory;
         }
 
-        // TODO 
+        // TODO load from db
         public bool LoadProducts()
         {
             int current = Inventory.Count;
