@@ -6,21 +6,21 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
     {
         private readonly VendingMachine vendingMachine;
         private readonly CurrencyDenominations cd;
+        private bool activeTransaction;
+
         public ConsoleUI()
         {
             vendingMachine = new VendingMachine();
             cd = new CurrencyDenominations();
+            this.activeTransaction = false;
         }
+
         public bool MainMenu()
         {
+            string menuItems = $"\n0) Exit, \n1) Purchase product, \n2) Show all products, \n3) Insert money, \n4) End transaction,\nChoose function:";
             Console.Clear();
-            Console.WriteLine("...Lexicon Vending Machine...\n");
-            Console.WriteLine("0) Exit");
-            Console.WriteLine("1) Purchase product");
-            Console.WriteLine("2) Show all products");
-            Console.WriteLine("3) Insert money");
-            Console.WriteLine("4) End transaction");
-            Console.Write("\r\nChoose function: ");
+            Console.WriteLine(menuItems);
+            
 
             switch (Console.ReadLine())
             {
@@ -41,15 +41,14 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
                     vendingMachine.EndTransaction();
                     Console.ReadKey();
                     return true;
-
                 default:
                     return true;
             }
-
         }
+
         public string GetDenominationList()
         {
-            string denominationList = "Select value to insert:\n";
+            string denominationList = "\nSelect value to insert:\n";
             for (int i = cd.denominations.Length - 1; i >= 0; i--)
             {
                 denominationList += $"\n{i}) {cd.denominations[i]}kr";
@@ -67,7 +66,7 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             string quantity = GetUserInput();
             bool checkQuantity = int.TryParse(quantity, out int multiple);
 
-            if (checkQuantity && checkDenomination)
+            if (checkQuantity && checkDenomination && denomination <= cd.denominations.Length)
             {
                 inputDenomination[0] = denomination;
                 inputDenomination[1] = multiple;
@@ -77,17 +76,24 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
 
         public int SelectProduct()
         {
-            Console.WriteLine(vendingMachine.ShowAll());
-            Console.WriteLine("\nEnter id to select product...");
-            bool parseInput = true;
-            int userInput = GetUserInput(parseInput);
+            this.activeTransaction = true;
+            bool inputValidated = false;
+            int userInput = -1;
+            
+            while (activeTransaction)
+            {
+                Console.Clear();
+                Console.WriteLine(vendingMachine.ShowAll());
+                Console.WriteLine("\nEnter id to select product...");
 
+                userInput = GetUserInput(inputValidated);
+            }          
+                        
             return userInput;
         }
 
         private string GetUserInput()
         {
-
             string usrInput;
             do
             {
@@ -102,12 +108,12 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             return usrInput;
         }
 
-        //Overloaded method to parse input and check if within valid range, if validateProducts = true validation depends on products.Count else denominations.length
+        //Overloaded method to parse input and check if selected ID is within valid range
         private int GetUserInput(bool validateProducts)
         {
             ProductFactory pf = new ProductFactory();
             string usrOption;
-            bool validate;
+            bool validate = validateProducts;
             int parsedOption;
 
             do
@@ -144,8 +150,5 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
 
             return displayItems;
         }
-
-
-
     }
 }
