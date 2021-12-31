@@ -10,7 +10,7 @@ namespace LexiconVendingMachine
         private static bool ProductsLoaded;
         public int MoneyPool { get; private set; }
 
-       
+
         public bool InsertMoney(int _denomination, int _quantity)
         {
             int denomination = _denomination;
@@ -39,8 +39,10 @@ namespace LexiconVendingMachine
             return AvailableProducts;
         }
 
-        public bool Purchase(int key)
-        {           
+        public Product Purchase(int key)
+        {
+            Product purchasedItem = null;
+
             if (!ProductsLoaded) { LoadProducts(); }
 
             bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].Price <= MoneyPool;
@@ -49,10 +51,11 @@ namespace LexiconVendingMachine
             {
                 AvailableProducts[key].InStock -= 1;
                 MoneyPool -= AvailableProducts[key].Price;
-
-                return true;
+                purchasedItem = AvailableProducts[key];
+                purchasedItem.InStock = 1;
             }
-            else return false;
+
+            return purchasedItem;
         }
 
         public string ShowAll()
