@@ -8,30 +8,39 @@ namespace LexiconVendingMachine
     {
         private static Dictionary<int, Product> AvailableProducts;
         private static bool ProductsLoaded;
-        private int MoneyPool { get; set; }
+        public int MoneyPool { get; private set; }
 
-        public bool InsertMoney(int denomination, int quantity)
+       
+        public bool InsertMoney(int _denomination, int _quantity)
         {
+            int denomination = _denomination;
+            int quantity = _quantity;
             bool success = false;
             int currentValue = MoneyPool;
+            LogWriter.LogWrite("" + MoneyPool + currentValue + denomination + quantity);
             CurrencyDenominations cd = new CurrencyDenominations();
 
-            // Prevent negative inputs and check so input is valid denomination
+            // Prevent negative inputs and check so input is of valid denomination
             bool validDenomination = cd.denominations.Contains(denomination) && denomination > 0 && quantity > 0;
-
+            LogWriter.LogWrite(validDenomination.ToString() + "validDenom");
+            LogWriter.LogWrite(validDenomination.ToString() + denomination + quantity);
             if (validDenomination)
             {
                 int insertedAmount = denomination * quantity;
                 MoneyPool += insertedAmount;
-                success = currentValue < MoneyPool;
+                success = currentValue <= MoneyPool;
+                LogWriter.LogWrite(success.ToString());
             }
-
             return success;
         }
 
-        public bool Purchase(int key)
+        public Dictionary<int, Product> GetAvailableProducts()
         {
-            MoneyPool = 100; //TODO DELETE
+            return AvailableProducts;
+        }
+
+        public bool Purchase(int key)
+        {           
             if (!ProductsLoaded) { LoadProducts(); }
 
             bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].Price <= MoneyPool;
