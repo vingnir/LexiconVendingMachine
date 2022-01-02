@@ -2,9 +2,9 @@
 using System.IO;
 using System.Reflection;
 
-namespace LexiconVendingMachine
+namespace LexiconVendingMachine.Utils
 {
-    // Class to log exceptions, log.txt is located in \bin\Debug\net5.0
+    // Class to log exceptions, log.txt is located in \bin\Debug\net5.0 or LexiconVendingMachine.Tests\bin\Debug\netcoreapp3.1
     public class LogWriter
     {
         public static void LogWrite(string logMessage)

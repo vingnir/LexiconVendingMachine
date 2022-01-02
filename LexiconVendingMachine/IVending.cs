@@ -6,7 +6,7 @@
 
         string ShowAll();
 
-        bool InsertMoney(int denomination, int quantity); //TODO return reciept INT or string , inserted value , total value
+        int InsertMoney(int denomination, int quantity);
 
         int[] EndTransaction();
     }

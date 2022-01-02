@@ -6,28 +6,29 @@ namespace LexiconVendingMachine.Tests
     public class VendingMachineTests
     {
 
-        // Test InsertMoney
+        // Test InsertMoney, returns reciept of the transaction:  denomination * quantity
         [Theory]
-        [InlineData(3, 1, false)] // Test forbidden denominations
-        [InlineData(15, 1, false)]
-        [InlineData(25, 1, false)]
-        [InlineData(1, 15, true)] // Test allowed denominations
-        [InlineData(20, 15, true)]
-        [InlineData(50, 1, true)]
-        [InlineData(500, 3, true)]
-        [InlineData(1000, 2, true)]
-        [InlineData(0, 0, false)]
-        [InlineData(-100, 5, false)] // Tests to prevent malicious code from making positive number from two negatives
-        [InlineData(-1, -500, false)]
-        [InlineData(-500, 1, false)]
-        [InlineData(-500, -1, false)]
-        public void InsertMoney_ShouldReturnTrueIfValueIsAdded(int denomination, int quantity, bool expected)
+        [InlineData(3, 1, 0)] // Test forbidden denominations
+        [InlineData(15, 1, 0)]
+        [InlineData(35, 10, 0)]
+        [InlineData(25, 1, 0)]
+        [InlineData(1, 15, 15)] // Test valid denominations
+        [InlineData(20, 15, 300)]
+        [InlineData(50, 1, 50)]
+        [InlineData(500, 3, 1500)]
+        [InlineData(1000, 2, 2000)]
+        [InlineData(0, 0, 0)]
+        [InlineData(-100, 5, 0)] // Tests to prevent malicious code from making positive number from two negatives
+        [InlineData(-1, -500, 0)]
+        [InlineData(-500, 1, 0)]
+        [InlineData(-500, -1, 0)]
+        public void InsertMoney_ShouldReturnIntRecieptOfInsertedAmount(int denomination, int quantity, int expected)
         {
             VendingMachine vendingMachine = new VendingMachine();
             // Arrange
 
             // Act
-            bool actual = vendingMachine.InsertMoney(denomination, quantity);
+            int actual = vendingMachine.InsertMoney(denomination, quantity);
 
             // Assert
             Assert.Equal(expected, actual);

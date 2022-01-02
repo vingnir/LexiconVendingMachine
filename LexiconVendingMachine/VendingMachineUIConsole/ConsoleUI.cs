@@ -6,18 +6,18 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
     {
         private readonly VendingMachine vendingMachine;
         private readonly CurrencyDenominations cd;
-        private bool activeTransaction;
+        private bool ActiveTransaction;
 
         public ConsoleUI()
         {
             vendingMachine = new VendingMachine();
             cd = new CurrencyDenominations();
-            this.activeTransaction = false;
+            this.ActiveTransaction = false;
         }
 
         public bool MainMenu()
         {
-            string menuItems = $"\n0) Exit, \n1) Purchase product, \n2) Show all products, \n3) Show deposited amount, \n4) End transaction,\nChoose function:";
+            string menuItems = $"\n0) Exit, \n1) Purchase product, \n2) Show all products,\n3) Add credit, \n4) Show credit, \n5) End transaction \nChoose function:";
             Console.Clear();
             Console.WriteLine(menuItems);
             switch (Console.ReadLine())
@@ -32,10 +32,14 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
                     Console.ReadKey();
                     return true;
                 case "3":
-                    ShowDeposit();
+                    HandleTransaction();
                     return true;
                 case "4":
-                    Console.WriteLine($"Returned deposit: {vendingMachine.EndTransaction()}");
+                    Console.WriteLine($"\nCredit: {ShowDeposit()}");
+                    Console.ReadKey();
+                    return true;
+                case "5":
+                    Console.WriteLine($"\nCurrent credit: {ShowDeposit()} \n{ReturnChange()}");
                     Console.ReadKey();
                     return true;
                 default:
@@ -47,35 +51,42 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
         {
             int selected;
             Product purchasedProduct;
+            ConsoleKeyInfo usrReply;
             string productInfo;
-            int budget = 0;
-
-            if (vendingMachine.MoneyPool == 0 )
+            var availableProducts = vendingMachine.GetAvailableProducts();
+            this.ActiveTransaction = true;
+            while (ActiveTransaction)
             {
-                Console.WriteLine("You need to add money to the machine! To add money enter 'y' ");
-                int[] cashDeposit;
-                cashDeposit = RequestMoneyFromUser();
-                bool cashInserted = vendingMachine.InsertMoney(cashDeposit[0], cashDeposit[1]);
-                budget = cashInserted ? vendingMachine.MoneyPool : 0;
-               // Console.WriteLine(productInfo);
-                Console.ReadKey();
-            }
-
-            if (budget > 0)
-            {
+                Console.Clear();
+                Console.WriteLine(DisplayProducts());
+                Console.WriteLine($"\nTotal credit: {ShowDeposit()}\nEnter id to select product:");
                 selected = SelectProduct();
-
-                purchasedProduct = vendingMachine.Purchase(selected);
-
-                //var productsInStock = vendingMachine.GetAvailableProducts();
-
-                productInfo = purchasedProduct.Use();
-                //LogWriter.LogWrite(msgToUser);
-                Console.WriteLine(productInfo);
-                Console.ReadKey();
+                if(selected < 0) { MainMenu(); }
+                else if (availableProducts[selected].Price > ShowDeposit())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nCredit is to low\n");
+                    Console.ResetColor();
+                    Console.WriteLine($"Current credit = {ShowDeposit()} \n\tPress 'y' to add more credit or enter to choose another item");
+                    usrReply = Console.ReadKey(true);
+                    if (usrReply.Key == ConsoleKey.Y) { HandleTransaction(); }
+                    continue;
+                }
+                else if (availableProducts[selected].InStock == 0)
+                {
+                    Console.WriteLine($"{availableProducts[selected].Name} is out of stock\nPlease choose another product\n Press enter to continue...");
+                    Console.ReadKey();
+                    continue;
+                }
+                else
+                {
+                    purchasedProduct = vendingMachine.Purchase(selected);
+                    productInfo = $"Selected product: {purchasedProduct.Name}\n Price: {purchasedProduct.Price}kr\n { purchasedProduct.Use()}";
+                    Console.WriteLine($"{productInfo}\n Press enter to continue... ");
+                    Console.ReadKey();
+                }
             }
         }
-        
 
         public int ShowDeposit()
         {
@@ -83,93 +94,99 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             return credit;
         }
 
-
         public string GetDenominationList()
         {
             string denominationList = "\nSelect value to insert:\n";
-            for (int i = cd.denominations.Length - 1; i >= 0; i--)
+            for (int index = cd.denominations.Length - 1; index >= 0; index--)
             {
-                denominationList += $"\n{i}) {cd.denominations[i]}kr";
+                denominationList += $"\n{index}) {cd.denominations[index]}kr";
             }
-
             return denominationList;
         }
 
+        public bool HandleTransaction()
+        {
+            ConsoleKeyInfo answer;
+            bool activeRequest = true;
+            while (activeRequest)
+            {
+                Console.Clear();
+                Console.WriteLine($"\nPlease input money to the machine or type 'exit' for Main menu \nCurrent credit = {ShowDeposit()}");
+                int[] cashDeposit;
+                cashDeposit = RequestMoneyFromUser();
+                vendingMachine.InsertMoney(cashDeposit[0], cashDeposit[1]);
+                Console.WriteLine($"Current credit = {ShowDeposit()} \n\tInsert more money? 'y' or press enter to continue...");
+                answer = Console.ReadKey(true);
+                if (answer.Key == ConsoleKey.Y) { continue; } else { activeRequest = false; }
+            }
+            return true;
+        }
         public int[] RequestMoneyFromUser()
         {
             int[] inputDenomination = new int[2];
             Console.WriteLine(GetDenominationList());
-            string usrInput = GetUserInput();
-            bool checkDenomination = int.TryParse(usrInput, out int denomIndex);
-            Console.WriteLine("How many of this value would you like to insert?");
-
-            string quantity = GetUserInput();
-            bool checkQuantity = int.TryParse(quantity, out int multiple);
-
-            if (checkQuantity && checkDenomination && denomIndex <= cd.denominations.Length ) //TOOD check <= 
-            {
-                inputDenomination[0] = cd.denominations[denomIndex];
-                inputDenomination[1] = multiple;
-            }
+            int maxValue = cd.denominations.Length - 1;
+            int minValue = 0;
+            int denominationIndex = GetUserInput(minValue, maxValue);
+            Console.WriteLine($"Selected denomination: {cd.denominations[denominationIndex]} \nHow many of this value would you like to deposit?");
+            // Set max quantity 
+            maxValue = 100;
+            int quantity = GetUserInput(minValue, maxValue);
+            inputDenomination[0] = cd.denominations[denominationIndex];
+            inputDenomination[1] = quantity;
 
             return inputDenomination;
         }
 
         public int SelectProduct()
-        {           
+        {
             int selectedItemID;
-            int maxValue = vendingMachine.GetAvailableProducts().Count;
+            int maxValue = vendingMachine.GetAvailableProducts().Count - 1;
             int minValue = 0;
-            Console.WriteLine(DisplayProducts());
-            Console.WriteLine("\nEnter id to select product...");
             selectedItemID = GetUserInput(minValue, maxValue);
-            
+
             return selectedItemID;
         }
- 
-        //Overloaded method to parse input and check if selected input int is within valid range
+
+        //Method to parse input and check if selected input int is within valid range
         private int GetUserInput(int min, int max)
         {
             string userInput;
             bool validate;
             int parsedInputInt;
+
             do
             {
                 userInput = Console.ReadLine();
                 _ = int.TryParse(userInput, out parsedInputInt);
-                validate = parsedInputInt >= min && parsedInputInt < max;
-                if (!validate || string.IsNullOrEmpty(userInput))
+                validate = parsedInputInt >= min && parsedInputInt <= max;
+                if (userInput == "exit")
                 {
-                    Console.WriteLine($"Invalid input, please try again\n Only enter valid product id numbers");
+                    ActiveTransaction = false;
+                    parsedInputInt = -1;
+                    MainMenu();
+                    break;
                 }
-            } while (string.IsNullOrEmpty(userInput) || !validate);
+                else if (string.IsNullOrEmpty(userInput) || !validate)
+                {
+                    Console.WriteLine($"Invalid input, please try again or type 'exit' for main menu...\n Only enter numbers between {min} and {max} ");
+                    parsedInputInt = -1;
+                }
+            }
+            while (string.IsNullOrEmpty(userInput) || !validate || parsedInputInt == -1);
 
             return parsedInputInt;
-        }
-        private string GetUserInput()
-        {
-            string usrInput;
-            do
-            {
-                usrInput = Console.ReadLine();
-
-                if (string.IsNullOrEmpty(usrInput))
-                {
-                    Console.WriteLine("Invalid input, please try again...");
-                }
-            } while (string.IsNullOrEmpty(usrInput));
-
-            return usrInput;
         }
 
         public string ReturnChange()
         {
+            string displayChangeMsg = $"\nMoney in return from {ShowDeposit()}kr \n";
             var change = vendingMachine.EndTransaction();
-            string displayChangeMsg = $"\nMoney in return from {vendingMachine.MoneyPool}kr \n";
-            for (int i = cd.denominations.Length - 1; i >= 0; i--)
+            for (int index = cd.denominations.Length - 1; index >= 0; index--)
             {
-                displayChangeMsg += change[i] > 0 ? $"\n" + change[i] + " x " + cd.denominations[i] + "kr" : "";
+                displayChangeMsg += change[index] > 0 ? $"\n" + change[index] + " x " + cd.denominations[index] + "kr" : "";
             }
+            ActiveTransaction = false;
             return displayChangeMsg;
         }
 
@@ -177,7 +194,6 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
         public string DisplayProducts()
         {
             string displayItems = vendingMachine.ShowAll();
-
             return displayItems;
         }
     }

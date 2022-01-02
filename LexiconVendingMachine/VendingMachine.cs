@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LexiconVendingMachine.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,32 +11,28 @@ namespace LexiconVendingMachine
         private static bool ProductsLoaded;
         public int MoneyPool { get; private set; }
 
-
-        public bool InsertMoney(int _denomination, int _quantity)
+        public int InsertMoney(int denomination, int quantity)
         {
-            int denomination = _denomination;
-            int quantity = _quantity;
-            bool success = false;
-            int currentValue = MoneyPool;
-            LogWriter.LogWrite("" + MoneyPool + currentValue + denomination + quantity);
             CurrencyDenominations cd = new CurrencyDenominations();
+            int recieptInserted = 0;
+            int previousValue = MoneyPool;
 
             // Prevent negative inputs and check so input is of valid denomination
             bool validDenomination = cd.denominations.Contains(denomination) && denomination > 0 && quantity > 0;
-            LogWriter.LogWrite(validDenomination.ToString() + "validDenom");
-            LogWriter.LogWrite(validDenomination.ToString() + denomination + quantity);
+
             if (validDenomination)
             {
                 int insertedAmount = denomination * quantity;
                 MoneyPool += insertedAmount;
-                success = currentValue <= MoneyPool;
-                LogWriter.LogWrite(success.ToString());
+                recieptInserted = MoneyPool - previousValue;
+                LogWriter.LogWrite($"Inserted amount = {recieptInserted}, Moneypool = {MoneyPool}");
             }
-            return success;
+            return recieptInserted;
         }
 
         public Dictionary<int, Product> GetAvailableProducts()
         {
+            if (!ProductsLoaded) { LoadProducts(); }
             return AvailableProducts;
         }
 
@@ -45,14 +42,13 @@ namespace LexiconVendingMachine
 
             if (!ProductsLoaded) { LoadProducts(); }
 
-            bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].Price <= MoneyPool;
+            bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].InStock > 0;
 
-            if (productIsAvailable)
+            if (productIsAvailable && AvailableProducts[key].Price <= MoneyPool)
             {
                 AvailableProducts[key].InStock -= 1;
                 MoneyPool -= AvailableProducts[key].Price;
                 purchasedItem = AvailableProducts[key];
-                purchasedItem.InStock = 1;
             }
 
             return purchasedItem;
@@ -75,6 +71,7 @@ namespace LexiconVendingMachine
         {
             Calculator calculator = new Calculator();
             int[] depositToReturn = calculator.GetChange(MoneyPool);
+            MoneyPool = 0;
 
             return depositToReturn;
         }
@@ -98,9 +95,8 @@ namespace LexiconVendingMachine
                 AvailableProducts = new Dictionary<int, Product>();
                 AvailableProducts = productFactory.GetProducts();
                 ProductsLoaded = true;
-                return true;
             }
-            else return false;
+            return ProductsLoaded;
         }
     }
 }
