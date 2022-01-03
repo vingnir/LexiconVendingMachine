@@ -10,12 +10,9 @@
             this.Unit = "g";
             this.InStock = stock;
         }
-
-
-
         public override string Use()
         {
-            string instructions = "Eat and enjoy...";
+            string instructions = $"\nSelected item is {Name} {Size}{Unit} \nEat and enjoy...";
             return instructions;
         }
     }

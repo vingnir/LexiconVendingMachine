@@ -1,7 +1,8 @@
-﻿using LexiconVendingMachine.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using LexiconVendingMachine.Utils;
 
 namespace LexiconVendingMachine
 {
@@ -9,6 +10,7 @@ namespace LexiconVendingMachine
     {
         private static Dictionary<int, Product> AvailableProducts;
         private static bool ProductsLoaded;
+
         public int MoneyPool { get; private set; }
 
         public int InsertMoney(int denomination, int quantity)
@@ -40,7 +42,7 @@ namespace LexiconVendingMachine
         {
             Product purchasedItem = null;
 
-            if (!ProductsLoaded) { LoadProducts(); }
+           // if (!ProductsLoaded) { LoadProducts(); }
 
             bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].InStock > 0;
 
@@ -58,7 +60,7 @@ namespace LexiconVendingMachine
         {
             string productList = $"\nId|Name\t\t Size\t Price\t In stock";
 
-            if (!ProductsLoaded) { LoadProducts(); }
+           // if (!ProductsLoaded) { LoadProducts(); }
 
             foreach (var product in AvailableProducts)
             {
@@ -87,10 +89,10 @@ namespace LexiconVendingMachine
             string instructions = $"Put money in the machine and follow the instructions...";
             return instructions;
         }
-        private bool LoadProducts()
+        public bool LoadProducts()
         {
             ProductFactory productFactory = new ProductFactory();
-            if (AvailableProducts == null)
+            if (!ProductsLoaded)
             {
                 AvailableProducts = new Dictionary<int, Product>();
                 AvailableProducts = productFactory.GetProducts();

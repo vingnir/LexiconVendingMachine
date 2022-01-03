@@ -10,7 +10,7 @@
 
         public virtual string Examine()
         {
-            string examineItem = $"{Name}, {Size}, {Unit}, {Price}, {InStock}";
+            string examineItem = $"{Name} {Size} {Unit} {Price} {InStock}";
 
             return examineItem;
         }

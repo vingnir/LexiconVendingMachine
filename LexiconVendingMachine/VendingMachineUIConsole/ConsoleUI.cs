@@ -81,7 +81,7 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
                 else
                 {
                     purchasedProduct = vendingMachine.Purchase(selected);
-                    productInfo = $"Selected product: {purchasedProduct.Name}\n Price: {purchasedProduct.Price}kr\n { purchasedProduct.Use()}";
+                    productInfo = $"\n { purchasedProduct.Use()}";
                     Console.WriteLine($"{productInfo}\n Press enter to continue... ");
                     Console.ReadKey();
                 }
@@ -190,6 +190,11 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             return displayChangeMsg;
         }
 
+        public bool LoadVendingMachine()
+        {
+            bool confirm = vendingMachine.LoadProducts();
+            return confirm;
+        }
 
         public string DisplayProducts()
         {

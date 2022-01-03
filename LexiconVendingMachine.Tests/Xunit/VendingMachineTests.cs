@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using Xunit;
 
 
 namespace LexiconVendingMachine.Tests
@@ -22,10 +23,10 @@ namespace LexiconVendingMachine.Tests
         [InlineData(-1, -500, 0)]
         [InlineData(-500, 1, 0)]
         [InlineData(-500, -1, 0)]
-        public void InsertMoney_ShouldReturnIntRecieptOfInsertedAmount(int denomination, int quantity, int expected)
+        public void InsertMoney_ShouldReturnInsertedAmount(int denomination, int quantity, int expected)
         {
-            VendingMachine vendingMachine = new VendingMachine();
             // Arrange
+            VendingMachine vendingMachine = new VendingMachine();
 
             // Act
             int actual = vendingMachine.InsertMoney(denomination, quantity);
@@ -34,23 +35,22 @@ namespace LexiconVendingMachine.Tests
             Assert.Equal(expected, actual);
         }
 
-
-
-
-        // Testing method with no arguments to setup inventory
         [Fact]
-        public void LoadProducts_ShouldReturnTrueIfProductsAreCreated()
+        public void GetAvailableProducts_ShouldReturnDictionaryWithProducts()
         {
+
             // Arrange
-            ProductFactory pf = new ProductFactory();
-            bool expected = true;
+            VendingMachine vendingMachine = new VendingMachine();
+            //Dictionary<int, Product> expected = new Dictionary<int, Product>();
 
             // Act
-            bool actual = pf.LoadProducts();
+            var actual = vendingMachine.GetAvailableProducts();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.True(actual.Count > 0);
+
         }
+
 
 
 

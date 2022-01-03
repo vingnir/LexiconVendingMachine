@@ -10,10 +10,9 @@
             this.Unit = "pcs";
             this.InStock = stock;
         }
-
         public override string Use()
         {
-            string instructions = "Play and have fun...";
+            string instructions = $"\nSelected item is {Name} \nPlay and have fun...";
             return instructions;
         }
     }
