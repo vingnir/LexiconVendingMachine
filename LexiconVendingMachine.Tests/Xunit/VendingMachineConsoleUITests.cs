@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using LexiconVendingMachine.VendingMachineUIConsole;
+﻿using LexiconVendingMachine.VendingMachineUIConsole;
+using System;
 using System.IO;
-using LexiconVendingMachine.Utils;
+using Xunit;
 namespace LexiconVendingMachine.Tests.Xunit
 {
-    
+
     public class VendingMachineConsoleUITests
     {
         [Fact]
@@ -23,7 +20,6 @@ namespace LexiconVendingMachine.Tests.Xunit
 
             //Assert
             Assert.Equal(expected, actual);
-
         }
 
         [Fact]
@@ -66,7 +62,7 @@ namespace LexiconVendingMachine.Tests.Xunit
             Assert.Equal(expected, actual);
         }
 
-        
+
         [Fact]
         public void HandleUserPurchase__ShouldNotContainText()
         {
@@ -142,7 +138,7 @@ namespace LexiconVendingMachine.Tests.Xunit
             Console.SetIn(sr);
 
             // Act
-            
+
             //string result = sw.ToString();
             bool actual = ui.HandleTransaction();
 
@@ -185,11 +181,11 @@ namespace LexiconVendingMachine.Tests.Xunit
             actual = result[0] * result[1];
 
             // Assert
-            Assert.Equal(expected,actual);
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [InlineData(100,3, true)]
+        [InlineData(100, 3, true)]
         [InlineData(10, 101, false)]
         [InlineData(50, 1000, false)]
         [InlineData(14, 1, false)]
@@ -206,7 +202,7 @@ namespace LexiconVendingMachine.Tests.Xunit
             bool actual;
             int defaultQuantity = 1;
             int index = -1;
-           
+
             for (int i = 0; i < cd.denominations.Length; i++)
             {
                 if (denomination == cd.denominations[i])
@@ -217,18 +213,17 @@ namespace LexiconVendingMachine.Tests.Xunit
             string inputs = $"{index}\n{quantity}\n{defaultQuantity}\n";
             using var consoleInputs = new StringReader(inputs);
             Console.SetIn(consoleInputs);
-                               
+
             // Act
             var result = ui.RequestMoneyFromUser();
-            actual = result[0] * result[1] == denomination*quantity;
+            actual = result[0] * result[1] == denomination * quantity;
 
             // Assert           
             Assert.Equal(expected, actual);
         }
 
-    
         [Theory]
-        [InlineData(0,true)]
+        [InlineData(0, true)]
         [InlineData(1, true)]
         [InlineData(4, true)]
         [InlineData(5, false)]
@@ -248,16 +243,15 @@ namespace LexiconVendingMachine.Tests.Xunit
             actual = ui.SelectProduct() == id;
 
             // Assert
-            Assert.Equal(expected,actual);
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [InlineData(0, 20, 15,true)]
+        [InlineData(0, 20, 15, true)]
         [InlineData(10, 20, 11, true)]
-        [InlineData(0, 20, 25, false)]        
+        [InlineData(0, 20, 25, false)]
         public void GetUserInput__ShouldReturnNumberInValidRange(int min, int max, int input, bool expected)
         {
-    
             // Arrange
             ConsoleUI ui = new ConsoleUI();
             using var sw = new StringWriter();
@@ -269,18 +263,17 @@ namespace LexiconVendingMachine.Tests.Xunit
             Console.SetIn(sr);
 
             // Act
-            actual = ui.GetUserInput(min,max) == input;
-     
+            actual = ui.GetUserInput(min, max) == input;
+
             //Assert
             Assert.Equal(expected, actual);
         }
-
 
         [Fact]
         public void ShowDeposit__ShouldReturnZeroCredit()
         {
             // Arrange
-             ConsoleUI userInterface = new ConsoleUI();
+            ConsoleUI userInterface = new ConsoleUI();
             int actual;
             int expected = 0;
 
@@ -295,22 +288,17 @@ namespace LexiconVendingMachine.Tests.Xunit
         public void ShowDeposit__ShouldReturn5000Credit()
         {
             // Arrange
-
-            // Arrange
             ConsoleUI ui = new ConsoleUI();
             using var sw = new StringWriter();
             using var sr = new StringReader("\n7\n5\n\n");
             bool expected = true;
             bool actual;
-            
+
             Console.SetOut(sw);
             Console.SetIn(sr);
 
             // Act
-                        
             bool result = ui.HandleTransaction();
-
-            //Act
             actual = ui.ShowDeposit() == 5000;
 
             //Assert
@@ -323,13 +311,13 @@ namespace LexiconVendingMachine.Tests.Xunit
         [InlineData(20, 5, true)]
         [InlineData(1000, 10, true)]
         public void ShowDeposit__ShouldReturnCredit(int denomination, int quantity, bool expected)
-        {            
+        {
             // Arrange
             CurrencyDenominations cd = new CurrencyDenominations();
             ConsoleUI ui = new ConsoleUI();
             using var sw = new StringWriter();
             Console.SetOut(sw);
-            bool actual;           
+            bool actual;
             int index = -1;
 
             for (int i = 0; i < cd.denominations.Length; i++)
@@ -342,10 +330,10 @@ namespace LexiconVendingMachine.Tests.Xunit
             string inputs = $"{index}\n{quantity}\n";
             using var consoleInputs = new StringReader(inputs);
             Console.SetIn(consoleInputs);
-                        
+
             // Act
-            bool result = ui.HandleTransaction();                       
-            actual = ui.ShowDeposit() == denomination*quantity;
+            bool result = ui.HandleTransaction();
+            actual = ui.ShowDeposit() == denomination * quantity;
 
             //Assert
             Assert.Equal(expected, actual);
@@ -365,7 +353,7 @@ namespace LexiconVendingMachine.Tests.Xunit
             // Arrange
             ConsoleUI userInterface = new ConsoleUI();
             string actual;
-           
+
             //Act
             actual = userInterface.GetDenominationInfo();
 
@@ -381,7 +369,7 @@ namespace LexiconVendingMachine.Tests.Xunit
         [InlineData("Sand", true)]
         [InlineData("wich", true)]
         [InlineData("Pizza", true)]
-        [InlineData("Pi", true)]       
+        [InlineData("Pi", true)]
         [InlineData("Dags o sova?", false)]
         [InlineData("Lexicon", false)]
         public void DisplayProducts__ShouldContainStringWithProductNames(string productName, bool expected)
@@ -407,7 +395,6 @@ namespace LexiconVendingMachine.Tests.Xunit
         {
             // Arrange
             ConsoleUI ui = new ConsoleUI();
-            //ui.Initialize();
             bool actual;
             string result;
 
@@ -420,7 +407,7 @@ namespace LexiconVendingMachine.Tests.Xunit
         }
 
         [Theory]
-        [InlineData(5,3, true)]
+        [InlineData(5, 3, true)]
         [InlineData(500, 3, true)]
         [InlineData(1500, 3, false)]
         [InlineData(20, 101, false)]
@@ -443,13 +430,13 @@ namespace LexiconVendingMachine.Tests.Xunit
                 }
             }
             string inputs = $"{index}\n{quantity}\nexit\n";
-            using var sr = new StringReader(inputs);           
-           
+            using var sr = new StringReader(inputs);
+
             Console.SetOut(sw);
             Console.SetIn(sr);
 
             // Act                      
-            ui.HandleTransaction();          
+            ui.HandleTransaction();
             result = ui.ReturnChange();
             actual = result.Contains(credit.ToString());
 

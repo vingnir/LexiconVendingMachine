@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Xunit;
 
 
@@ -43,7 +42,7 @@ namespace LexiconVendingMachine.Tests
 
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
-           
+
             // Act
             var actual = vendingMachine.GetAvailableProducts();
 
@@ -68,17 +67,17 @@ namespace LexiconVendingMachine.Tests
         }
 
         [Theory]
-        [InlineData(int.MinValue,true)]
+        [InlineData(int.MinValue, true)]
         [InlineData(5, false)]
         [InlineData(100000, true)]
         public void GetAvailableProducts_ShouldNotEqualNumberOfProductsInDictionary(int wrongNumber, bool expected)
         {
             // Arrange
-            VendingMachine vendingMachine = new VendingMachine();                      
+            VendingMachine vendingMachine = new VendingMachine();
             int correctNumber = vendingMachine.GetAvailableProducts().Count;
 
             // Act
-            bool actual = wrongNumber != correctNumber; 
+            bool actual = wrongNumber != correctNumber;
 
             // Assert
             Assert.Equal(expected, actual);
@@ -93,10 +92,10 @@ namespace LexiconVendingMachine.Tests
             Random r = new Random();
             vendingMachine.LoadProducts();
             vendingMachine.InsertMoney(1000, 5);
-            int validMaxIndex = vendingMachine.GetAvailableProducts().Count -1;
+            int validMaxIndex = vendingMachine.GetAvailableProducts().Count - 1;
             int randomIndex = r.Next(0, validMaxIndex);
-            bool expected = true; 
-            
+            bool expected = true;
+
             // Act
             var purchasedProduct = vendingMachine.Purchase(randomIndex);
             bool actual = purchasedProduct != null;
@@ -110,11 +109,11 @@ namespace LexiconVendingMachine.Tests
         public void Purchase_IndexShouldNotBeValidRange()
         {
             // Arrange
-            VendingMachine vendingMachine = new VendingMachine();            
+            VendingMachine vendingMachine = new VendingMachine();
             vendingMachine.LoadProducts();
             vendingMachine.InsertMoney(1000, 5);
             int inValidMaxIndex = vendingMachine.GetAvailableProducts().Count + 1;
-            
+
             bool expected = true;
 
             // Act
@@ -132,7 +131,7 @@ namespace LexiconVendingMachine.Tests
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
             vendingMachine.LoadProducts();
-            
+
             bool expected = true;
 
             // Act
@@ -148,7 +147,7 @@ namespace LexiconVendingMachine.Tests
         {
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
-            vendingMachine.LoadProducts();            
+            vendingMachine.LoadProducts();
             bool expected = false;
 
             // Act
@@ -164,7 +163,7 @@ namespace LexiconVendingMachine.Tests
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
             CurrencyDenominations cd = new CurrencyDenominations();
-            
+
             int expected = vendingMachine.InsertMoney(100, 5);
             int actual = 0;
 
@@ -173,15 +172,15 @@ namespace LexiconVendingMachine.Tests
 
             for (int index = cd.denominations.Length - 1; index >= 0; index--)
             {
-                actual += moneyInReturn[index,0] * moneyInReturn[index, 1];
+                actual += moneyInReturn[index, 0] * moneyInReturn[index, 1];
             }
-            
+
             // Assert
             Assert.Equal(expected, actual);
         }
 
         [Theory]
-        [InlineData(50,5, 250)]
+        [InlineData(50, 5, 250)]
         [InlineData(500, 0, 0)]
         [InlineData(15, 1, 0)]
         [InlineData(int.MaxValue, 5, 0)]
@@ -195,7 +194,7 @@ namespace LexiconVendingMachine.Tests
             VendingMachine vendingMachine = new VendingMachine();
             CurrencyDenominations cd = new CurrencyDenominations();
             vendingMachine.InsertMoney(denomination, quantity);
-            int actual = 0;          
+            int actual = 0;
 
             // Act
             int[,] moneyInReturn = vendingMachine.EndTransaction();
@@ -218,7 +217,7 @@ namespace LexiconVendingMachine.Tests
             int actual = 0;
             int expected = moneyToChange;
 
-           
+
             // Act
             int[,] moneyInReturn = vendingMachine.GetChange(moneyToChange);
 
@@ -233,14 +232,14 @@ namespace LexiconVendingMachine.Tests
 
         [Theory]
         [InlineData(500, 500)]
-        [InlineData(0,0)]
+        [InlineData(0, 0)]
         [InlineData(int.MaxValue, int.MaxValue)]
         public void GetChange__ShouldReturn2DArrayOfInsertedAmounts(int moneyToChange, int expected)
         {
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
             int actual = 0;
-           
+
             // Act
             int[,] moneyInReturn = vendingMachine.GetChange(moneyToChange);
 
@@ -259,7 +258,7 @@ namespace LexiconVendingMachine.Tests
         {
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
-            
+
             bool actual;
             bool expected = false;
 
@@ -276,7 +275,7 @@ namespace LexiconVendingMachine.Tests
             // Arrange
             VendingMachine vendingMachine = new VendingMachine();
             string instructions = $"Put money in the machine and follow the instructions...";
-            bool actual; 
+            bool actual;
             bool expected = true;
 
             // Act

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using LexiconVendingMachine.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using LexiconVendingMachine.Utils;
 
 namespace LexiconVendingMachine
 {
@@ -19,7 +18,7 @@ namespace LexiconVendingMachine
         }
 
         public int InsertMoney(int denomination, int quantity)
-        {          
+        {
             int recieptInserted = 0;
             int previousValue = MoneyPool;
 
@@ -69,15 +68,15 @@ namespace LexiconVendingMachine
             return productList;
         }
 
-        public int[,] EndTransaction() 
-        {                  
-            int[,] changeToReturn = GetChange(MoneyPool);          
+        public int[,] EndTransaction()
+        {
+            int[,] changeToReturn = GetChange(MoneyPool);
             MoneyPool = 0;
             return changeToReturn;
         }
 
         public int[,] GetChange(int moneyBack)
-        {           
+        {
             int[] denominations = cd.denominations;
             int size = cd.denominations.Length;
             int[,] change = new int[size, size];

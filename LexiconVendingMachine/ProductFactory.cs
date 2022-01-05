@@ -15,7 +15,7 @@ namespace LexiconVendingMachine
         public Dictionary<int, Product> GetProducts()
         {
             if (Inventory.Count <= 0)
-            {    
+            {
                 int key = 0;
                 Inventory.Add(key++, new ProductDrink("Trocadero", 330, 15, 40));
                 Inventory.Add(key++, new ProductFood("Kexchocklad", 55, 25, 80));
