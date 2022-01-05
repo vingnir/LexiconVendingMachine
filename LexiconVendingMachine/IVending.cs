@@ -8,6 +8,6 @@
 
         int InsertMoney(int denomination, int quantity);
 
-        int[] EndTransaction();
+        int[,] EndTransaction();
     }
 }

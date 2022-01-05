@@ -10,18 +10,21 @@ namespace LexiconVendingMachine
     {
         private static Dictionary<int, Product> AvailableProducts;
         private static bool ProductsLoaded;
-
+        public readonly CurrencyDenominations cd;
         public int MoneyPool { get; private set; }
 
-        public int InsertMoney(int denomination, int quantity)
+        public VendingMachine()
         {
-            CurrencyDenominations cd = new CurrencyDenominations();
+            this.cd = new CurrencyDenominations();
+        }
+
+        public int InsertMoney(int denomination, int quantity)
+        {          
             int recieptInserted = 0;
             int previousValue = MoneyPool;
 
             // Prevent negative inputs and check so input is of valid denomination
             bool validDenomination = cd.denominations.Contains(denomination) && denomination > 0 && quantity > 0;
-
             if (validDenomination)
             {
                 int insertedAmount = denomination * quantity;
@@ -41,9 +44,6 @@ namespace LexiconVendingMachine
         public Product Purchase(int key)
         {
             Product purchasedItem = null;
-
-           // if (!ProductsLoaded) { LoadProducts(); }
-
             bool productIsAvailable = AvailableProducts.ContainsKey(key) && AvailableProducts[key].InStock > 0;
 
             if (productIsAvailable && AvailableProducts[key].Price <= MoneyPool)
@@ -60,7 +60,7 @@ namespace LexiconVendingMachine
         {
             string productList = $"\nId|Name\t\t Size\t Price\t In stock";
 
-           // if (!ProductsLoaded) { LoadProducts(); }
+            if (!ProductsLoaded) { LoadProducts(); }
 
             foreach (var product in AvailableProducts)
             {
@@ -69,13 +69,27 @@ namespace LexiconVendingMachine
             return productList;
         }
 
-        public int[] EndTransaction()
-        {
-            Calculator calculator = new Calculator();
-            int[] depositToReturn = calculator.GetChange(MoneyPool);
+        public int[,] EndTransaction() 
+        {                  
+            int[,] changeToReturn = GetChange(MoneyPool);          
             MoneyPool = 0;
+            return changeToReturn;
+        }
 
-            return depositToReturn;
+        public int[,] GetChange(int moneyBack)
+        {           
+            int[] denominations = cd.denominations;
+            int size = cd.denominations.Length;
+            int[,] change = new int[size, size];
+            int remainingAmount = moneyBack;
+
+            for (int i = size - 1; i >= 0; i--)
+            {
+                change[i, 0] = remainingAmount / denominations[i];
+                change[i, 1] = denominations[i];
+                remainingAmount %= denominations[i];
+            }
+            return change;
         }
 
         public override string Examine()

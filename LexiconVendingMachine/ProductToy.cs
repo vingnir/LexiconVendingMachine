@@ -12,7 +12,7 @@
         }
         public override string Use()
         {
-            string instructions = $"\nSelected item is {Name} \nPlay and have fun...";
+            string instructions = $"\nSelected item is:\n {Name}\n {Price}kr \nPlay and have fun...";
             return instructions;
         }
     }

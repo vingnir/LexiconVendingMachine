@@ -7,7 +7,7 @@ namespace LexiconVendingMachine
         static void Main()
         {
             ConsoleUI userInterface = new ConsoleUI();
-            userInterface.LoadVendingMachine();
+            userInterface.Initialize();
             bool showMenu = true;
 
             while (showMenu)
