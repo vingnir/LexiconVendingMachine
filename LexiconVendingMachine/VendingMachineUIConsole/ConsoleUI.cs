@@ -25,7 +25,7 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
         {
             string exitMsg = "\n\n Press any key to exit..."; 
             string menuItems = $"\n0) Exit, \n1) Purchase product, \n2) Show all products,\n3) Add credit, \n4) Show credit, \n5) End transaction \nChoose function:";
-            Console.Clear();
+            // Console.Clear(); //TODO Uncomment Stringreader will get erased during test
             Console.WriteLine(menuItems);
             switch (Console.ReadLine())
             {
@@ -54,7 +54,7 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             }
         }
 
-        public void HandleUserPurchase() //TODO
+        public void HandleUserPurchase()
         {
             int selected;
             Product purchasedProduct;
@@ -63,7 +63,7 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
             this.ActiveTransaction = true;
             while (ActiveTransaction)
             {
-                Console.Clear();
+              //  Console.Clear(); //TODO Uncomment Stringreader will get erased during test
                 Console.WriteLine(DisplayProducts());
                 Console.WriteLine($"\nTotal credit: {ShowDeposit()}kr \n\nEnter id to select product:");
                 selected = SelectProduct();
@@ -111,18 +111,17 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
 
         public bool HandleTransaction()
         {
-            ConsoleKeyInfo answer;
+            string reply;
             bool activeRequest = true;
             while (activeRequest)
             {
-                Console.Clear();
+                // Console.Clear(); //TODO Comment out while testing 
                 Console.WriteLine($"\nPlease input money to the machine! \nCurrent credit = {ShowDeposit()}kr");
-                int[] cashDeposit = RequestMoneyFromUser();
-                //cashDeposit = RequestMoneyFromUser();
+                int[] cashDeposit = RequestMoneyFromUser();               
                 vendingMachine.InsertMoney(cashDeposit[0], cashDeposit[1]);
                 Console.WriteLine($"Current credit = {ShowDeposit()}kr \n\tInsert more money? Press 'y' or press any key to exit..."); 
-                answer = Console.ReadKey(true);
-                if ( answer.Key == ConsoleKey.Y ) { continue; } else { activeRequest = false; }
+                reply = Console.ReadLine();
+                if ( reply == "y" ) { continue; } else { activeRequest = false; }
             }
             return true;
         }
@@ -156,16 +155,16 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
         }
 
         //Method to parse input to Integer and check if value is within valid range       
-        private int GetUserInput(int min, int max)
+        public int GetUserInput(int min, int max)
         {      
-            string userInput;
+            //string userInput;
             int validNum = -1;
             bool validated = false;
             string errorMsg = $" Invalid input!\n\nEnter a number between {min} & {max} or type 'exit' for main menu";
             Console.WriteLine($"\nEnter a number between {min} & {max}");
             while (!validated)
             {                
-                userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();
                 if (userInput == "exit") { ActiveTransaction = false;  return -1; } 
                 else if (int.TryParse(userInput, out validNum))
                 {                    
@@ -200,6 +199,14 @@ namespace LexiconVendingMachine.VendingMachineUIConsole
         {
             string displayItems = vendingMachine.ShowAll();
             return displayItems;
+        }
+
+        // TODO DELETE Only for testing purpose
+        public bool GetFreeCredit()
+        {
+            bool result = vendingMachine.InsertMoney(6, 1) > 0;
+            return result;
+
         }
     }
 }
